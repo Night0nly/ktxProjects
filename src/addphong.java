@@ -1,3 +1,5 @@
+package ktx;
+
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -23,8 +25,6 @@ public addphong(String phong,int khu,int loaiphong){
 	stmt.executeUpdate(sql);
 	sql ="insert into diennuoc(maph,dtt,dts,ntt,nts,sum_sd,sum_nc,tiendien,tnuoc)"
 			+"values ('"+maph+"',0,0,0,0,0,0,0,0);";
-	stmt.executeUpdate(sql);
-	sql="update nha set sophong=sophong+1";
 	stmt.executeUpdate(sql);
 	stmt.close();
 
