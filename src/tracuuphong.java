@@ -22,19 +22,23 @@ import javax.swing.table.DefaultTableModel;
 public class tracuuphong {
 
     Connection c = new getconect().getcon();
-    String loai;
-    String quanly;
+    String loai,quanly,khui;
     Vector row,column;
     int numbercolumn;
 	public DefaultTableModel tb=new DefaultTableModel();
     public tracuuphong(int khu, String phong, String loai, String quanly,DefaultTableModel tb) {
-        if (phong.length() == 0) {
+        if(khu==0)khui="b5";
+        if(khu==1)khui="b6";
+        if(khu==3)khui="b7";
+        String maphong;
+        maphong= khui+"-"+phong;
+    	if (phong.length() == 0) {
             JOptionPane.showMessageDialog(null, "Bạn cần nhập từ khóa để tìm", "Thông báo", 1);
             
         } else {
             try {
                 Statement stmt = c.createStatement();
-                String sql="select loaiphong,quanlynha from nha,phong where nha.tennha=phong.nha and maph='"+phong+"';";
+                String sql="select loaiphong,quanlynha from nha,phong where nha.tennha=phong.nha and maph='"+maphong+"';";
                 ResultSet rs1=stmt.executeQuery(sql);
                 while(rs1.next()){
                 this.quanly=rs1.getString(2);
@@ -42,7 +46,7 @@ public class tracuuphong {
                 }
 
                 column = new Vector();
-                String sql1="select mssv,ten,khoa,ngayvao from sinhvien where maph = '"+phong+"';";
+                String sql1="select mssv,ten,khoa,ngayvao from sinhvien where maph = '"+maphong+"';";
                 ResultSet rs2=stmt.executeQuery(sql1);
                 ResultSetMetaData metaData=rs2.getMetaData();
                 numbercolumn=metaData.getColumnCount();
