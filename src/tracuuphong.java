@@ -3,14 +3,17 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ktx;
+
 
 import java.sql.Connection;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.ResultSet;
 import java.sql.Statement;
-import javax.swing.JLabel;
+import java.util.Vector;
+
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -21,23 +24,40 @@ public class tracuuphong {
     Connection c = new getconect().getcon();
     String loai;
     String quanly;
-
-    public tracuuphong(int khu, String phong, String loai, String quanly) {
+    Vector row,column;
+    int numbercolumn;
+	public DefaultTableModel tb=new DefaultTableModel();
+    public tracuuphong(int khu, String phong, String loai, String quanly,DefaultTableModel tb) {
         if (phong.length() == 0) {
             JOptionPane.showMessageDialog(null, "Bạn cần nhập từ khóa để tìm", "Thông báo", 1);
+            
         } else {
             try {
                 Statement stmt = c.createStatement();
-                String sql = "select loaiphong from phong where maph='" + phong + "';";
-                ResultSet rs = stmt.executeQuery(sql);
-                while (rs.next()) {
-                    this.loai = rs.getString(1);
-                }
-                String sql1="select quanlynha from nha,phong where nha.tennha=phong.nha and maph='"+phong+"';";
-                ResultSet rs1=stmt.executeQuery(sql1);
+                String sql="select loaiphong,quanlynha from nha,phong where nha.tennha=phong.nha and maph='"+phong+"';";
+                ResultSet rs1=stmt.executeQuery(sql);
                 while(rs1.next()){
-                this.quanly=rs1.getString(1);
+                this.quanly=rs1.getString(2);
+                this.loai=rs1.getString(1);
                 }
+
+                column = new Vector();
+                String sql1="select mssv,ten,khoa,ngayvao from sinhvien where maph = '"+phong+"';";
+                ResultSet rs2=stmt.executeQuery(sql1);
+                ResultSetMetaData metaData=rs2.getMetaData();
+                numbercolumn=metaData.getColumnCount();
+                for(int i=1;i<=numbercolumn;i++){
+                	column.add(metaData.getColumnName(i));
+                }
+                this.tb.setColumnIdentifiers(column);
+                while(rs2.next()){
+                	row=new Vector();
+                	for(int i=1;i<=numbercolumn;i++){
+                		row.add(rs2.getString(i));
+                	}
+                	this.tb.addRow(row);
+                }
+                
                 stmt.close();
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -45,5 +65,7 @@ public class tracuuphong {
 
         }
     }
+
+
 
 }

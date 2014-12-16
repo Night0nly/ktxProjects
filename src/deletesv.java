@@ -1,9 +1,9 @@
-package ktx;
-
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+
+import javax.swing.JOptionPane;
 
 
 public class deletesv {
@@ -32,6 +32,7 @@ public class deletesv {
 						+"where maph = '"+maphong+"';";
 				stmt.executeUpdate(sql);
 			}
+			JOptionPane.showMessageDialog(null, "delete successful");
 			stmt.close();
 			c.close();
 		} catch (SQLException e) {

@@ -1,10 +1,10 @@
-package ktx;
-
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
+
+import javax.swing.JOptionPane;
 
 
 public class addsv {
@@ -24,6 +24,7 @@ public addsv(String name,String lop,String mssv,String que,String ngaysinh,int d
 	stmt.executeUpdate(sql);
     sql="update phong set songuoi=songuoi+1 where maph ='"+maph+"';";
     stmt.executeUpdate(sql);
+    JOptionPane.showMessageDialog(null, "successful");
     stmt.close();
     c.close();
 	//stmt.executeQuery(sql);
